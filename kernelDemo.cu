@@ -1,17 +1,17 @@
 
-// ÏÂÃæÊÇ×Ô¼ºµÄÏîÄ¿²âÊÔ02£¬×Ô¼º½«ĞŞ¸Ädemo
-// ³ÉÎª×Ô¼ºµÄ Á½¸ö´óÊı×éÏà¼ÓµÄcuda³ÌĞò;
-// ²¢ÇÒÊä³ö¹Ø¼ü girdDim  ºÍ blockDim µÄĞÅÏ¢
-// By  ZJF.Speedy.ÕÅ½¨·å
-// NOTE: ±ØĞëÒªÇóÊÇX64µÄÆ½Ì¨
-// NOTE: X86Æ½Ì¨ÔËĞĞ£¬Ö±½Ó±Àµô;
+// ä¸‹é¢æ˜¯è‡ªå·±çš„é¡¹ç›®æµ‹è¯•02ï¼Œè‡ªå·±å°†ä¿®æ”¹demo
+// æˆä¸ºè‡ªå·±çš„ ä¸¤ä¸ªå¤§æ•°ç»„ç›¸åŠ çš„cudaç¨‹åº;
+// å¹¶ä¸”è¾“å‡ºå…³é”® girdDim  å’Œ blockDim çš„ä¿¡æ¯
+// By  ZJF.Speedy
+// NOTE: å¿…é¡»è¦æ±‚æ˜¯X64çš„å¹³å°
+// NOTE: X86å¹³å°è¿è¡Œï¼Œç›´æ¥å´©æ‰;
 // Via My Test Solution Case03
 
 #include <iostream>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-#include <math.h>		//  Check error ÓÃ
+#include <math.h>		//  Check error ç”¨
 #include <cmath>
 
 
@@ -48,11 +48,11 @@ __global__ void MyAddGPU(int n, float *x, float *y)
 		y[i] = x[i] + y[i];
 	}
 
-	if (1 == index)	// ËæÒâÖ¸¶¨Ò»¸öindex ´òÓ¡Êä³ö Á½¸ö²ÎÊıÈçÏÂ
+	if (1 == index)	// éšæ„æŒ‡å®šä¸€ä¸ªindex æ‰“å°è¾“å‡º ä¸¤ä¸ªå‚æ•°å¦‚ä¸‹
 	{
 		printf("blockDim.x = %d\n", blockDim.x);
 		printf("gridDim.x = %d\n", gridDim.x);	// <<<gridDim.x, blockDim.x>>>
-		// CUDAÆ½Ì¨ÉÏ ²»Ö§³ÖC++µÄ Ïà¹Ø¿â
+		// CUDAå¹³å°ä¸Š ä¸æ”¯æŒC++çš„ ç›¸å…³åº“
 		//std::cout << "gridDim.x = " << gridDim.x << std::endl;
 	}
 	
@@ -62,7 +62,7 @@ __global__ void MyAddGPU(int n, float *x, float *y)
 // malloc memory aimed at GPU 
 void mallocGPU(int n, float *x, float *y)
 {
-	cudaMallocManaged(&x, n * sizeof(float));	// ×¢Òâ¿´º¯ÊıµÄ¶¨Òå µÚÒ»¸öarg ÊÇ **devPtr
+	cudaMallocManaged(&x, n * sizeof(float));	// æ³¨æ„çœ‹å‡½æ•°çš„å®šä¹‰ ç¬¬ä¸€ä¸ªarg æ˜¯ **devPtr
 	cudaMallocManaged(&y, n * sizeof(float));
 }
 
@@ -133,7 +133,7 @@ int main()
 	//std::cout << "Running datails:\n" << std::endl;
 	//std::cout << "GirdDim.x = " << gridDim.x << std::endl;
 	//std::cout << "blockDim.x = " << blockDim.x << std::endl;
-	// ×¢ÒâÕâÖ®ºóÒªÊÔ×ÅÏÔÊ¾ºÍµ÷ÓÃÉÏÃæµÄÁ½¸ö¹Ø¼ü±äÁ¿
+	// æ³¨æ„è¿™ä¹‹åè¦è¯•ç€æ˜¾ç¤ºå’Œè°ƒç”¨ä¸Šé¢çš„ä¸¤ä¸ªå…³é”®å˜é‡
 
 
 	// ---------------------------------------------
@@ -225,17 +225,17 @@ int main()
 		std::cout << "Device name: " << prop.name << std::endl;
 		std::cout << "maxThreadsPerBlock: " << prop.maxThreadsPerBlock << std::endl;
 		std::cout << "multiProcessorCount : " << prop.multiProcessorCount << std::endl;
-		std::cout << "blockDim(.xÏÈºóÈı¸öÎ¬¶È): " << prop.maxThreadsDim[0] <<" "
+		std::cout << "blockDim(.xå…ˆåä¸‰ä¸ªç»´åº¦): " << prop.maxThreadsDim[0] <<" "
 			<<prop.maxThreadsDim[1] <<" "<< prop.maxThreadsDim[2]<< std::endl;
-		std::cout << "GridDim.x(.xÏÈºóÈı¸öÎ¬¶È): " << prop.maxGridSize[0] << " "
+		std::cout << "GridDim.x(.xå…ˆåä¸‰ä¸ªç»´åº¦): " << prop.maxGridSize[0] << " "
 			<< prop.maxGridSize[1] << " " << prop.maxGridSize[2] << std::endl;
 		std::cout << "concurrentKernels: " << prop.concurrentKernels << std::endl; // ?
 		std::cout << "maxThreadsPerMultiProcessor: " << prop.maxThreadsPerMultiProcessor <<
-			std::endl;	//  ²»ÓÃĞøĞĞ·û
-		std::cout << "totalGlobalMem: " << prop.totalGlobalMem << std::endl; //3GÏÔ´æ
-		std::cout << "major & minor: " << prop.major << " " << prop.minor << std::endl; // ? ¸úÓ²¼ş°æ±¾ÓĞ¹Ø
+			std::endl;	//  ä¸ç”¨ç»­è¡Œç¬¦
+		std::cout << "totalGlobalMem: " << prop.totalGlobalMem << std::endl; //3Gæ˜¾å­˜
+		std::cout << "major & minor: " << prop.major << " " << prop.minor << std::endl; // ? è·Ÿç¡¬ä»¶ç‰ˆæœ¬æœ‰å…³
 		std::cout << "WarpSize: " << prop.warpSize << std::endl;
-		std::cout << "memPitch: " << prop.memPitch << std::endl;  // ÊıÖµ°´bytes¼ÆËã
+		std::cout << "memPitch: " << prop.memPitch << std::endl;  // æ•°å€¼æŒ‰bytesè®¡ç®—
 		std::cout << "tccDriver: " << prop.tccDriver << std::endl;
 		std::cout << "singleToDoublePrecisionPerfRatio: " << prop.singleToDoublePrecisionPerfRatio << std::endl;
 		std::cout << "sharedMemPerBlock: " << prop.sharedMemPerBlock << std::endl;
